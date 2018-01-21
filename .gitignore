@@ -12,3 +12,4 @@ build.js.gz
 *.blend*
 docs/
 deploy.sh
+package-lock.json

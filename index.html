@@ -6,12 +6,14 @@
     <link rel="icon" href="favicon.ico">
     <meta name="description" content="Explore the universe in your browser or VR/AR/MR helmet via WebVR.">
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Ubuntu" rel="stylesheet">
+    <script src="https://rawgit.com/ngokevin/aframe/bestframe/dist/aframe-master.min.js"></script>
     <script src="build.js"></script>
     <link rel="icon" type="image/png" href="img/icon-32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="img/icon-16.png" sizes="16x16" />
   </head>
   <body>
-    <a-scene redux="reducers: worldSettings" pool__star="mixin: star; size: 100;">
+    <audio src="assets/sounds/Lazenbee_Industries_-_ammunition.mp3" loop autoplay></audio>
+    <a-scene camera-scaler="enabled: true" redux="reducers: worldSettings" pool__star="mixin: star; size: 100;">
 
       <a-assets>
         <!-- assets -->
@@ -54,13 +56,10 @@
         <a-entity id="star-detail-spawner" star-detail-spawner redux-bind="worldSettings.ui.selectedStar: star-detail-spawner.selectedStar; worldSettings.starfieldReady: star-detail-spawner.starfieldReady; worldSettings.zoomLevel: star-detail-spawner.zoomLevel; worldSettings.time: star-detail-spawner.time"></a-entity>
       </a-entity>
 
-      <a-entity id="right-hand" gearvr-controls></a-entity>
-      <a-entity keyboard-time-controls gearvr-time-controls time-controls></a-entity>
-
       <!-- parent object for everything following the user around -->
       <a-entity follow-entity redux-bind="worldSettings.starfieldReady: visible">
         <!-- control panel -->
-        <a-entity id="control-panel" position="0 -1.25  -.45" rotation="-75 0 0">
+        <a-entity id="control-panel" position="0 -0.8 -.55" rotation="-75 0 0" control-panel>
 
           <!-- EXOPLANET CONTROLS -->
           <a-entity id="exoplanet-controls" position="-.25 0 0">
@@ -88,29 +87,49 @@
         </a-entity>
       </a-entity>
 
-      <a-entity id="acamera" camera="near: 10e-4; far: 10e10" position="0 1.6 0" gearvr-fly-controls look-controls gamepad-controls="look-enabled: false; fly-enabled: true" wasd-controls="fly: true">
-        <a-entity id="acursor"
-          visible="false"
-          cursor="fuse: false; fuseTimeout: 1000"
-          raycaster="objects: .clickable; recursive: true; far: 100; near: 0"
-          position="0 0 0">
-              <a-entity id="cursorIndicator"
-                geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015; segmentsPhi: 1; segmentsTheta: 24;"
-                position="0 0 -1"
-                material="color: #ffffff; shader: flat; transparent: true; opacity: .5;"
-              ></a-entity>
-              <a-entity id="cursorHoverText"
-                position="0 -.125 -1"
-                text="value: ; align: center; width: 2; height: auto; anchor: center"
-                hover-text-display
-              ></a-entity>
-              <a-entity id="cursorTimeText"
-                position="0 .125 -1"
-                text="value: ; align: center; width: 2; height: auto; anchor: center"
-                redux-bind="worldSettings.time: time-display.time"
-                time-display
-              ></a-entity>
+      <a-entity id="cameraRig">
+        <a-entity id="acamera" camera="near: 10e-4; far: 10e10" look-controls>
+          <a-entity id="acursor"
+            visible="false"
+            cursor="fuse: false; fuseTimeout: 1000"
+            raycaster="objects: .clickable; recursive: true; far: 100; near: 0"
+            position="0 0 0">
+                <a-entity id="cursorIndicator"
+                  geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015; segmentsPhi: 1; segmentsTheta: 24;"
+                  position="0 0 -1"
+                  material="color: #ffffff; shader: flat; transparent: true; opacity: .5;"
+                ></a-entity>
+                <a-entity id="cursorHoverText"
+                  position="0 -.125 -1"
+                  text="value: ; align: center; width: 2; height: auto; anchor: center"
+                  hover-text-display
+                ></a-entity>
+                <a-entity id="cursorTimeText"
+                  position="0 .125 -1"
+                  text="value: ; align: center; width: 2; height: auto; anchor: center"
+                  redux-bind="worldSettings.time: time-display.time"
+                  time-display
+                ></a-entity>
+          </a-entity>
         </a-entity>
+
+        <a-entity id="left-hand"
+                  camera-scaler-hand="hand: left"
+                  controller-hover-text-display
+                  vive-controls="hand: left"
+                  oculus-touch-controls="hand: left"
+                  windows-motion-controls="hand: left"
+                  keyboard-time-controls
+                  control-panel-toggle
+                  sprite-toggle
+                  hide-cursor-if-connected
+                  controller-time-controls time-controls></a-entity>
+        <a-entity id="right-hand" laser-controls="hand: right"
+                  camera-scaler-hand="hand: right"
+                  control-panel-toggle
+                  sprite-toggle
+                  hide-cursor-if-connected
+                  controller-hover-text-display></a-entity>
       </a-entity>
 
       <a-entity id="star-detail-parent">

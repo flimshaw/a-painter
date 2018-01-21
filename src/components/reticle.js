@@ -54,3 +54,11 @@ AFRAME.registerComponent('reticle', {
   },
 
 });
+
+AFRAME.registerComponent('sprite-toggle', {
+  init: function () {
+    this.el.addEventListener('menudown', () => {
+      spriteMaterial.opacity = spriteMaterial.opacity ? 0 : 1;
+    });
+  }
+});

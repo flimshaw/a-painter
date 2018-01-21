@@ -374,6 +374,7 @@ AFRAME.registerComponent('starfield', {
     this.geo.attributes.velocity.array.set(velocity, offset * 3)
 
     this.geo.attributes.radius.array.set(radius, offset)
+    this.geo.computeBoundingSphere();
 
     if(this.geo.boundingSphere.radius < 1000) {
       this.geo.boundingSphere.radius = 1000;
@@ -474,7 +475,10 @@ AFRAME.registerComponent('starfield', {
               time: true
             }
           })
-          document.getElementById('acursor').setAttribute('visible', 'true')
+
+          if (document.getElementById('acursor')) {
+            document.getElementById('acursor').setAttribute('visible', 'true')
+          }
         }
 
         break;
